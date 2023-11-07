@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_picking_form_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.form.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_picking_move_tree']" position="before">
+                <field name="has_matching_survey" invisible="True"/>
+                <button name="create_survey_pick"
+                    class="oe_highlight"
+                    type="object"
+                    string="Create Survey"
+                    attrs="{'invisible': [('has_matching_survey', '!=', 0)]}"/>
+                
+                <button name="search_survey_user_input"
+                    class="oe_stat_button"
+                    type="object"
+                    help="List view of operations"
+                    groups="base.group_no_one"
+                    attrs="{'invisible': [('has_matching_survey', '=', 0)]}">
+                    <div class="o_form_field o_stat_info">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="1.5em" viewBox="0 0 384 512"><path d="M192 0c-41.8 0-77.4 26.7-90.5 64H64C28.7 64 0 92.7 0 128V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V128c0-35.3-28.7-64-64-64H282.5C269.4 26.7 233.8 0 192 0zm0 64a32 32 0 1 1 0 64 32 32 0 1 1 0-64zM305 273L177 401c-9.4 9.4-24.6 9.4-33.9 0L79 337c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L271 239c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"/></svg>
+                        
+                        <span style="margin-left: 1em;"><field name="has_matching_survey"/> Sondaggi</span>
+                    </div>
+                </button>
+            </xpath>
+        </field>
+    </record> 
+
+
+    <record id="survey_user_input_view_form_inherit" model="ir.ui.view">
+        <field name="name">survey_user_input_view_form_inherit</field>
+        <field name="model">survey.user_input</field>
+        <field name="inherit_id" ref="survey.survey_user_input_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="picking_id" readonly="1"/>
+                <field name="fake_create_datetime" readonly="1"/>
+            </xpath>
+        </field>
+    </record> 
+    
+    <record id="action_create_surveys" model="ir.actions.server">
+        <field name="name">Create Surveys</field>
+        <field name="model_id" ref="stock.model_stock_picking"/>
+        <field name="binding_model_id" ref="stock.model_stock_picking"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                for record in records:
+                    record.create_survey_picks()
+        </field>
+    </record>
+
+
+</odoo>
