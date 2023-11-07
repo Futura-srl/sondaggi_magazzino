@@ -9,6 +9,6 @@
         # # Settaggi per accesso ai contenuti
         #'data/ir.model.access.csv',
         # # Caricamento delle view,
-        'view/groups_field.xml',
+        'view/view_update.xml',
     ],
 }

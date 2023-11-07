@@ -5,25 +5,30 @@
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="stock.view_picking_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//button[@name='action_picking_move_tree']" position="before">
-                <field name="has_matching_survey" invisible="True"/>
-                <button name="create_survey_pick"
-                    class="oe_highlight"
+            <xpath expr="//button[@name='action_cancel']" position="after">
+                <button name="create_survey_picks_and_answers"
                     type="object"
-                    string="Create Survey"
-                    attrs="{'invisible': [('has_matching_survey', '!=', 0)]}"/>
+                    class= "btn-success"
+                    string="Create Survey and answers"
+                    attrs="{'invisible': ['|','|',('backorder_id', '!=', False),('has_matching_survey', '!=', 0),('picking_type_id', 'not in', [49, 50]),]}"/>
                 
+                <button name="create_survey_pick"
+                    type="object"
+                    class= "btn-warning"
+                    string="Create Survey"
+                    attrs="{'invisible': ['|','|',('backorder_id', '!=', False),('has_matching_survey', '!=', 0),('picking_type_id', 'not in', [49, 50]),]}"/>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <field name="has_matching_survey" invisible="True"/>            
                 <button name="search_survey_user_input"
                     class="oe_stat_button"
                     type="object"
-                    help="List view of operations"
-                    groups="base.group_no_one"
-                    attrs="{'invisible': [('has_matching_survey', '=', 0)]}">
+                    attrs="{'invisible': ['|',('has_matching_survey', '=', 0), ('picking_type_id', 'not in', [49, 50])]}"
+                    help="List view of operations">
                     <div class="o_form_field o_stat_info">
                         <svg xmlns="http://www.w3.org/2000/svg" height="1.5em" viewBox="0 0 384 512"><path d="M192 0c-41.8 0-77.4 26.7-90.5 64H64C28.7 64 0 92.7 0 128V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V128c0-35.3-28.7-64-64-64H282.5C269.4 26.7 233.8 0 192 0zm0 64a32 32 0 1 1 0 64 32 32 0 1 1 0-64zM305 273L177 401c-9.4 9.4-24.6 9.4-33.9 0L79 337c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L271 239c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"/></svg>
                         
-                        <span style="margin-left: 1em;"><field name="has_matching_survey"/> Sondaggi</span>
-                    </div>
+                        <span style="margin-left: 1em;"><field name="has_matching_survey"/> Sondaggi</span></div>
                 </button>
             </xpath>
         </field>
@@ -37,7 +42,12 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='partner_id']" position="after">
                 <field name="picking_id" readonly="1"/>
-                <field name="fake_create_datetime" readonly="1"/>
+            </xpath>
+            <xpath expr="//field[@name='create_date']" position="attributes">
+                <attribute name="attrs">{'invisible': [('fake_create_datetime', '!=', '')]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='create_date']" position="after">
+                <field name="fake_create_datetime" readonly="1" string="Create datetime"/>
             </xpath>
         </field>
     </record> 
@@ -51,7 +61,7 @@
         <field name="code">
             if records:
                 for record in records:
-                    record.create_survey_picks()
+                    record.create_survey_picks_and_answers()
         </field>
     </record>
 
