@@ -1,6 +1,6 @@
 {
     'name': 'Sondaggi magazzino',
-    'version': '16',
+    'version': '17.0',
     'author': "Luca Cocozza",
     'application': True,
     'description': "Aggiunta la possibilità di gestire i sondaggi per la merce scaricata nei magazzini",
