@@ -3,12 +3,12 @@ import uuid
 
 class SurveyWarehouse(models.Model):
     _inherit = 'survey.user_input'
-    
+
     picking_id = fields.Many2one('stock.picking', readonly=True)
     fake_create_datetime = fields.Datetime()
 
 
-    
+
 class WarehousePicking(models.Model):
     _inherit = 'stock.picking'
 
@@ -37,7 +37,6 @@ class WarehousePicking(models.Model):
         'message_has_error': False,
         'message_has_error_counter': 0,
         'message_attachment_count': 0,
-        'message_main_attachment_id': False,
         'website_message_ids': [],
         'message_has_sms_error': False,
         'survey_id': 24,
@@ -64,11 +63,11 @@ class WarehousePicking(models.Model):
         'vehicle_id': False,
         'picking_id': self.id,
         }
-        
+
         # Crea le risposte alle domande nel questionario
         user_input = self.env['survey.user_input'].create(survey_data)
-        
-    
+
+
     def create_survey_pick_and_answers(self):
         if self.backorder_id:
             return
@@ -94,7 +93,6 @@ class WarehousePicking(models.Model):
         'message_has_error': False,
         'message_has_error_counter': 0,
         'message_attachment_count': 0,
-        'message_main_attachment_id': False,
         'website_message_ids': [],
         'message_has_sms_error': False,
         'survey_id': 24,
@@ -123,10 +121,10 @@ class WarehousePicking(models.Model):
         'vehicle_id': False,
         'picking_id': self.id,
         }
-        
+
         # Crea le risposte alle domande nel questionario
         user_input = self.env['survey.user_input'].create(survey_data)
-        
+
         answer_1 = answer_2 = answer_3 = answer_4 = answer_5 = answer_6 = answer_7 = {
                 'user_input_id': user_input.id,
                 'page_id': False,
@@ -167,40 +165,40 @@ class WarehousePicking(models.Model):
         answer_1['suggested_answer_id'] = 793
         answer_1['answer_score'] = 10.0
         user_answer_1 = self.env['survey.user_input.line'].create(answer_1)
-        
+
         answer_2['question_id'] = 586
         answer_2['suggested_answer_id'] = 796
         answer_2['answer_score'] = 10.0
         user_answer_2 = self.env['survey.user_input.line'].create(answer_2)
-        
+
         answer_3['question_id'] = 587
         answer_3['suggested_answer_id'] = 799
         answer_3['answer_score'] = 10.0
         user_answer_3 = self.env['survey.user_input.line'].create(answer_3)
-        
+
         answer_4['question_id'] = 588
         answer_4['suggested_answer_id'] = 802
         answer_4['answer_score'] = 10.0
         user_answer_4 = self.env['survey.user_input.line'].create(answer_4)
-        
+
         answer_5['question_id'] = 589
         answer_5['suggested_answer_id'] = 805
         answer_5['answer_score'] = 10.0
         user_answer_5 = self.env['survey.user_input.line'].create(answer_5)
-        
+
         answer_6['question_id'] = 590
         answer_6['suggested_answer_id'] = 808
         answer_6['answer_score'] = 10.0
         user_answer_6 = self.env['survey.user_input.line'].create(answer_6)
-        
+
         answer_7['question_id'] = 591
         answer_7['suggested_answer_id'] = 811
         answer_7['answer_score'] = 10.0
         user_answer_7 = self.env['survey.user_input.line'].create(answer_7)
-        
-        return user_input.id      
 
-    
+        return user_input.id
+
+
     def search_survey_user_input(self):
         self.ensure_one()
         return {
@@ -221,5 +219,3 @@ class WarehousePicking(models.Model):
         for record in self:
             record.create_survey_pick_and_answers()
         return True
-    
-        
