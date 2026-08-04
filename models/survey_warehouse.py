@@ -205,7 +205,7 @@ class WarehousePicking(models.Model):
             'name': ('Sondaggi'),
             'type': 'ir.actions.act_window',
             'res_model': 'survey.user_input',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('picking_id', '=', self.name)],
         }
 
